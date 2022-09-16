@@ -28,7 +28,6 @@ def send_message(player): #Сообщение о выигрыше, выводи�
         print('Результат: Вы проиграли!')
     elif player == 'none':
         print('Результат: Ничья')
-
     print('Ваш баланс: ' + str(main_pack)) #Баланс игрока
     print('Баланс крупье: ' + str(croupier_pack) + '\n') #Баланс крупье
     return
@@ -42,11 +41,11 @@ def get_winner(): #Узнаём победителя
     if main_pack <= 21 and croupier_pack < 21 and main_pack > croupier_pack:
         send_message('self') #Вывод сообщения о победе
     if main_pack > 21 and croupier_pack <= 21:
-        send_message('coupier') #Вывод сообщения о проигрыше
+        send_message('croupier') #Вывод сообщения о проигрыше
     if main_pack < 21 and croupier_pack <= 21 and main_pack < croupier_pack:
-        send_message('coupier') #Вывод сообщения о проигрыше
+        send_message('croupier') #Вывод сообщения о проигрыше
     if main_pack > 21 and croupier_pack > 21:
-        send_message('coupier') #Вывод сообщения о проигрыше
+        send_message('croupier') #Вывод сообщения о проигрыше
     if main_pack == croupier_pack:
         send_message('none') #Вывод сообщения о ничьей
     return
