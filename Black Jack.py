@@ -10,14 +10,14 @@ KRUPIE_KOLODA = 0 #Изначальный баланс крупье
 def GET_CARD_MAIN():
     global MAIN_KOLODA #Обращение к глобальной переменной MAIN_KOLODA (Баланс игрока)
     print('Выпала карта - ' + str(KOLODA[-1])) #Выводим сообщение о том, какая выпала карта
-    MAIN_KOLODA += KOLODA.pop() #Добавляем карту к балансу игрока, после удаляем её
+    MAIN_KOLODA += KOLODA.pop() #Добавляем последнюю карту с колоды к балансу игрока, после удаляем её
     return
 
 def GET_CARD_KRUPIE():
     global KRUPIE_KOLODA #Обращение к глобальной переменной KRUPIE_KOLODA (Баланс крупье)
     #Добавляем немного человечности боту
     if KRUPIE_KOLODA < 21 and KRUPIE_KOLODA < 20 and KRUPIE_KOLODA < 19 and KRUPIE_KOLODA < 18 and KRUPIE_KOLODA < 17:
-        KRUPIE_KOLODA += KOLODA.pop() #Добавляем карту к балансу бота, после удаляем её
+        KRUPIE_KOLODA += KOLODA.pop() #Добавляем последнюю карту с колоды к балансу бота, после удаляем её
     return 
 
 def Win(): #Сообщение о выйгрыше, выводим сообщение с балансами обоих игроков
@@ -59,7 +59,7 @@ def GET_WINNER(): #Узнаём победителя
     if MAIN_KOLODA > 21 and KRUPIE_KOLODA > 21:
         Lose() #Вывод сообщения о пройгрыше
     if MAIN_KOLODA == KRUPIE_KOLODA:
-        Nothing()
+        Nothing() #Вывод сообщения о ничьей
     return
 
 while True:
@@ -70,22 +70,20 @@ while True:
             print('\n\n\n\n\n\n\n\n\n\n\n')
             if SELECTION == 'Y' or SELECTION == 'y' or SELECTION == 'н' or SELECTION == 'Н':
                 
-                #При согласии, отдаем разные карты игроку и боту
+                #При согласии, отдаем разные карты игроку и крупье
                 GET_CARD_KRUPIE() 
                 GET_CARD_MAIN() 
                 continue
 
-            if SELECTION == 'N' or SELECTION == 'n' or SELECTION == 'т' or SELECTION == 'Т':
-                
-                #При согласии, отдаем карту боту и завершаем игру
-                GET_CARD_KRUPIE()
-                GET_WINNER()
+            if SELECTION == 'N' or SELECTION == 'n' or SELECTION == 'т' or SELECTION == 'Т': #Отказ от выдачи карты
+                GET_CARD_KRUPIE() #Крупье берет карту
+                GET_WINNER() #Выявляем победителя
                 break
             else:
-                print('[Ошибка] Введите нужный символ')
+                print('[Ошибка] Введите нужный символ') #Ошибка, если не введен нужный символ
                 continue
         else:
             GET_WINNER()
             break
     except ValueError:
-        print('[Ошибка] Введите нужный символ')
+        print('[Ошибка] Введите нужный символ') #Ошибка, если не введен нужный символ, завершаем работу
