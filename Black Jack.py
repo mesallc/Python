@@ -45,15 +45,15 @@ def get_winner(): #Узнаём победителя
 
     if main_pack <= 21 and croupier_pack > 21:
         send_message('self') #Вывод сообщения о победе
-    if main_pack <= 21 and croupier_pack < 21 and main_pack > croupier_pack:
+    elif main_pack <= 21 and croupier_pack < 21 and main_pack > croupier_pack:
         send_message('self') #Вывод сообщения о победе
-    if main_pack > 21 and croupier_pack <= 21:
+    elif main_pack > 21 and croupier_pack <= 21:
         send_message('croupier') #Вывод сообщения о проигрыше
-    if main_pack < 21 and croupier_pack <= 21 and main_pack < croupier_pack:
+    elif main_pack < 21 and croupier_pack <= 21 and main_pack < croupier_pack:
         send_message('croupier') #Вывод сообщения о проигрыше
-    if main_pack > 21 and croupier_pack > 21:
+    elif main_pack > 21 and croupier_pack > 21:
         send_message('croupier') #Вывод сообщения о проигрыше
-    if main_pack == croupier_pack:
+    elif main_pack == croupier_pack:
         send_message('none') #Вывод сообщения о ничьей
     return
 
@@ -68,7 +68,7 @@ while True:
                 get_cards_main() #Игрок берёт карту
                 continue
 
-            if choice == 'N' or choice == 'n' or choice == 'т' or choice == 'Т': #Отказ от выдачи карты
+            elif choice == 'N' or choice == 'n' or choice == 'т' or choice == 'Т': #Отказ от выдачи карты
                 get_cards_croupier() #Крупье берёт карту
                 get_winner() #Выявляем победителя
                 select = input('\n\nНачать заного? [Y/N]: ')
@@ -87,6 +87,7 @@ while True:
             else:
                 print('\n\n[Ошибка] Введите нужный символ') #Ошибка, если не введен нужный символ
                 continue
+
         else:
             get_winner() #Выявляем победителя
             select = input('[Информация] Начать заного? [Y/N]: ')
@@ -101,6 +102,6 @@ while True:
 
             else:
                 print('\n\n[Ошибка] Введите нужный символ') #Ошибка, если не введен нужный символ
-                
+
     except ValueError:
         print('\n\n[Ошибка] Введите нужный символ') #Ошибка, если не введен нужный символ, завершаем работу
