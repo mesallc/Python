@@ -18,7 +18,7 @@ def get_cards_croupier():
         croupier_pack += cards.pop() #Добавляем последнюю карту с колоды к балансу бота, после удаляем её
     return 
 
-def set_default(): #Ставим стандарт
+def set_default_packs(): #Ставим стандарт
     global cards
     global main_pack
     global croupier_pack
@@ -74,7 +74,7 @@ while True:
                 select = input('\n\nНачать заного? [Y/N]: ')
 
                 if select == 'Y' or select == 'y' or select == 'н' or select == 'Н':
-                    set_default()
+                    set_default_packs()
                     continue
 
                 elif select == 'N' or select == 'n' or select == 'т' or select == 'Т':
@@ -93,7 +93,7 @@ while True:
             select = input('[Информация] Начать заного? [Y/N]: ')
 
             if select == 'Y' or select == 'y' or select == 'н' or select == 'Н':
-                set_default()
+                set_default_packs()
                 continue
 
             elif select == 'N' or select == 'n' or select == 'т' or select == 'Т':
