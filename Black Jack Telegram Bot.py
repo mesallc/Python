@@ -1,3 +1,4 @@
+from os import stat
 import telebot
 import random
 from telebot import types
@@ -8,7 +9,7 @@ random.shuffle(cards)
 
 winner = 'none' 
 packs = {'main': 0, 'croupier': 0} 
-stats = {'wins': 0, 'loses': 0, 'nones': 0}
+stats = {'wins': 0, 'loses': 0, 'nones': 0, 'games': 0, 'kd': 0}
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
@@ -18,6 +19,8 @@ def get_text_messages(message):
     wins = str(stats['wins'])
     loses = str(stats['loses'])
     nones = str(stats['nones'])
+    games = str(stats['games'])
+    kd = str(stats['kd'])
 
     if message.text == '/start':
         set_default_packs()
@@ -31,7 +34,10 @@ def get_text_messages(message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         hit = types.KeyboardButton("✅ Начать игру")
         markup.add(hit)
-        bot.send_message(message.from_user.id, 'Статистика:\n✅ Побед: ' +  wins + '\n❌ Поражений: ' + loses + '\n⚠️ Ничьих: ' + nones, reply_markup=markup)
+        if stats['games'] > 20:
+            bot.send_message(message.from_user.id, 'Статистика:\n\n✅ Побед: ' +  wins + '\n\n❌ Поражений: ' + loses + '\n\n⚠️ Ничьих: ' + nones + '\n\n⚡️ Сыграно игр: ' + games + '\n\n🏆 Процент побед: ' + kd, reply_markup=markup)
+        elif stats['games'] < 20:
+            bot.send_message(message.from_user.id, 'Статистика:\n\n✅ Побед: ' +  wins + '\n\n❌ Поражений: ' + loses + '\n\n⚠️ Ничьих: ' + nones + '\n\n⚡️ Сыграно игр: ' + games + '\n\n🏆 Процент побед: доступно только после 20 игр!', reply_markup=markup)
 
     elif message.text == '✅ Начать игру' or message.text == '✅ Hit':
         if packs['main'] < 21:
@@ -79,6 +85,17 @@ def get_text_messages(message):
             markup.add(hit, stand)
             bot.send_message(message.from_user.id, '⚠️ Ничья!\n💸 Ваш баланс: ' + str(packs['main']) + '\n💸 Баланс крупье: ' + str(packs['croupier']), reply_markup=markup)
             set_default_packs()
+
+    if packs['main'] == 21:
+        get_winner()
+        if winner == 'self':
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            hit = types.KeyboardButton("✅ Начать игру")
+            stand = types.KeyboardButton("❓ Статистика")
+            markup.add(hit, stand)
+            bot.send_message(message.from_user.id, '✅ Вы выиграли!\n💸 Ваш баланс: ' + str(packs['main']) + '\n💸 Баланс крупье: ' + str(packs['croupier']), reply_markup=markup)
+            set_default_packs()
+
     return
 
 def get_cards_main():
@@ -125,6 +142,12 @@ def get_winner():
     elif packs['main'] == packs['croupier']:
         winner = 'none'
         stats['nones'] += 1
+
+    stats['games'] += 1
+    if stats['games'] > 20:
+        wins_loses_percent = round(stats['wins'] / stats['loses'], 2)
+        stats['kd'] = wins_loses_percent
+
     return
     
 bot.polling(none_stop=True, interval=0)
